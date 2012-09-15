@@ -4,11 +4,14 @@
  */
 package Jet;
 
+import java.util.ArrayList;
+
+
 /**
  *
  * @author carmel
  */
 public interface Moduleable {
     
-    public String[] implementedHooks();
+    public ArrayList implementedHooks();
 }

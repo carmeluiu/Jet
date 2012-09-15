@@ -4,10 +4,12 @@
  */
 package Jet;
 
+import java.util.HashMap;
+
 /**
  *
  * @author carmel
  */
-public class ModuleList {
+public class ModuleList extends HashMap<String, Module> {
     
 }

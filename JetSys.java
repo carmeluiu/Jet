@@ -4,7 +4,7 @@
  */
 package Jet;
 
-import java.util.HashMap;
+import javaapplication2.Modules.TestModule.TestModule;
 
 /**
  *
@@ -12,13 +12,20 @@ import java.util.HashMap;
  */
 public class JetSys {
     
-//    private HashMap moduleList;
+    private ModuleList moduleList;
+    
     
     public JetSys() {
+        initModules();
+    }
+    
+    public void addModule(Module module) {
+        moduleList.put(module.getName(), module);
         
     }
     
-    public void addModule(Moduleable module) {
-        module.implementedHooks();
+    public final void initModules() {
+        addModule(new TestModule("testModule"));
+        
     }
 }

@@ -17,6 +17,6 @@ public class jet {
      * 
      */
     public static void main(String[] args) {
-        Tst t = new Tst(); 
+        JetSys sys = new JetSys();
    }
 }
