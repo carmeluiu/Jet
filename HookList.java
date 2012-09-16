@@ -4,12 +4,13 @@
  */
 package Jet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  *
  * @author carmel
  */
-public class HookList extends HashMap<String, Module> {
+public class HookList extends HashMap<String, ArrayList> {
     
 }
