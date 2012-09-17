@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -29,8 +29,12 @@ public class JetSys {
     public JetSys() {
         moduleList = new ModuleList();
         hookList = new HookList();
+    }
+    
+    public void bootstrap() {
         initModules();
         String hello = "hello";
+        
     }
     
     /**
@@ -40,6 +44,7 @@ public class JetSys {
     public void addModule(Module module) {
         moduleList.put(module.getName(), module);
         hookList.put(module.getName(), module.implementedHooks());
+        module.setSys(this);
         
     }
     

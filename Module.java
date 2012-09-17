@@ -22,10 +22,52 @@ public class Module implements Moduleable{
      */
     private boolean enabled;
     
+    /**
+     * The system object
+     */
+    private JetSys sys;
+    
+    /**
+     * 
+     * @param name 
+     */
     public Module(String name) {
         this.name = name;
         enabled = false;
     }
+
+    /**
+     * 
+     * @return 
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * 
+     * @param enabled 
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public JetSys getSys() {
+        return sys;
+    }
+
+    /**
+     * 
+     * @param sys 
+     */
+    public void setSys(JetSys sys) {
+        this.sys = sys;
+    }
+    
     
     /**
      * 
@@ -44,6 +86,7 @@ public class Module implements Moduleable{
     public void setName(String name) {
         this.name = name;
     }
+    
 
     @Override
     public ArrayList implementedHooks() {
