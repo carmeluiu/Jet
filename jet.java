@@ -16,7 +16,7 @@ public class jet {
      * @param args the command line arguments
      * 
      */
-    public static void main(String[] args) {
-        JetSys sys = new JetSys();
-   }
+//    public static void main(String[] args) {
+//        JetSys sys = new JetSys();
+//   }
 }

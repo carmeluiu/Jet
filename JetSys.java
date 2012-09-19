@@ -4,8 +4,6 @@
  */
 package Jet;
 
-import javaapplication2.Modules.ModuleModule.ModuleModule;
-import javaapplication2.Modules.TestModule.TestModule;
 
 /**
  *
@@ -52,8 +50,6 @@ public class JetSys {
      * 
      */
     public final void initModules() {
-        addModule(new TestModule("testModule"));
-        addModule(new ModuleModule("moduleModuel"));
     }
     
     /**

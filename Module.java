@@ -25,7 +25,7 @@ public class Module implements Moduleable{
     /**
      * The system object
      */
-    private JetSys sys;
+    public JetSys sys;
     
     /**
      * 
