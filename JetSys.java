@@ -24,14 +24,14 @@ public class JetSys {
     /**
      * 
      */
-    public JetSys() {
+    public JetSys() { 
         moduleList = new ModuleList();
         hookList = new HookList();
     }
     
     public void bootstrap() {
+    	Module.syst = this;
         initModules();
-        String hello = "hello";
         
     }
     

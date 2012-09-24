@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class Module implements Moduleable{
     
+	static JetSys syst;
+	
     /**
      * Module's unique name
      */
