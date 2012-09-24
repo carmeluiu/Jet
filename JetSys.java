@@ -5,6 +5,7 @@
 package Jet;
 
 import GUI.CGui2;
+import JetModules.webService.WebService;
 import Sys.Sys;
 import client.Client;
 
@@ -60,6 +61,7 @@ public class JetSys {
     	addModule(new CGui2("cgui2"));
     	addModule(new Client("client"));
     	addModule(new Sys("sys"));
+    	addModule(new WebService("webService"));
     }
     
     /**
