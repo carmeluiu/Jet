@@ -4,6 +4,10 @@
  */
 package Jet;
 
+import GUI.CGui2;
+import Sys.Sys;
+import client.Client;
+
 
 /**
  *
@@ -50,6 +54,12 @@ public class JetSys {
      * 
      */
     public final void initModules() {
+//    	addModule(new Client("client"));
+//    	new Client("client");
+
+    	addModule(new CGui2("cgui2"));
+    	addModule(new Client("client"));
+    	addModule(new Sys("sys"));
     }
     
     /**

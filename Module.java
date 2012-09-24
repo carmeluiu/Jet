@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Module implements Moduleable{
     
-	static JetSys syst;
+	public static JetSys syst;
 	
     /**
      * Module's unique name
@@ -34,8 +34,13 @@ public class Module implements Moduleable{
      * @param name 
      */
     public Module(String name) {
+    	syst.addModule(this);
         this.name = name;
         enabled = false;
+    }
+    
+    public Module(){
+    	
     }
 
     /**
