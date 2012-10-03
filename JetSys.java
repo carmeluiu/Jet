@@ -4,6 +4,9 @@
  */
 package Jet;
 
+
+import java.util.Collection;
+
 import GUI.CGui2;
 import JetModules.webService.WebService;
 import Sys.Sys;
@@ -12,10 +15,11 @@ import client.Client;
 
 /**
  *
- * @author carmel
  */
 public class JetSys {
     
+	protected HookListenerList listenerlist = new HookListenerList();
+	
     /**
      * 
      */
@@ -55,13 +59,21 @@ public class JetSys {
      * 
      */
     public final void initModules() {
-//    	addModule(new Client("client"));
-//    	new Client("client");
 
     	addModule(new CGui2("cgui2"));
+    	addModule(new WebService("webService"));
     	addModule(new Client("client"));
     	addModule(new Sys("sys"));
-    	addModule(new WebService("webService"));
+    	String[] modules = {"webService", "cgui2", "client", "sys"};
+    	enableModules(modules);
+    }
+
+    public void enableModules(String[] modules) {
+    	for(String name: modules) {
+    		Module m = getModule(name);
+    		m.setEnabled(true);
+    		runHookEnabled(m);
+    	}
     }
     
     /**
@@ -74,4 +86,48 @@ public class JetSys {
     public Module getModule(String name){
         return moduleList.get(name);
     }
+    
+    
+    //  =================== HOOK LISTENERS =========================
+    public void addHookModuleEnabledListener(Module m) {
+    	listenerlist.add("moduleEnabled", m);
+    }
+    
+
+    public void addHookEnabledListener(Module m) {
+    	listenerlist.add("hookEnabled", m);
+    }
+    
+    
+
+    //  =================== HOOK RUN FUNCTIONS =========================
+    /**
+     * 
+     * @param m
+     */
+    public void runHookModuleEnabled(Module m){
+    	ModuleList mlist = listenerlist.getImplementingModules("moduleEnabled");
+    	Collection<Module> c = mlist.values();
+    	for(Module module : c) {
+    		HookModuleEnabled h = (HookModuleEnabled)module;
+    		h.hookModuleEnabled(m);
+    	}
+    }
+    public void runHookEnabled(Module m){
+    	ModuleList mlist = listenerlist.getImplementingModules("hookEnabled");
+    	if(mlist.containsKey(m.getName())){
+        	HookEnabled h = (HookEnabled)m;
+        	h.hookEnabled();
+    	}
+    }
+
+    //  =================== HOOK INTERFACES =========================
+	public interface HookModuleEnabled{
+		public void hookModuleEnabled(Module m);
+	}
+
+	public interface HookEnabled{
+		public void hookEnabled();
+	}
+    
 }

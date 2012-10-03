@@ -10,4 +10,8 @@ package Jet.Modules.Core;
  */
 public class Core {
     
+	public void hookModuleEnabled(){
+		
+	}
+	
 }
