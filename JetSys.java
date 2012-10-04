@@ -5,12 +5,14 @@
 package Jet;
 
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.Collection;
 
-import GUI.CGui2;
-import JetModules.webService.WebService;
-import Sys.Sys;
-import client.Client;
+import duiu.com.core.jetModules.dTheme.DTheme;
+import duiu.com.core.jetModules.mgmnt.Mgmnt;
+import duiu.com.core.jetModules.tst.Tst;
+
 
 
 /**
@@ -30,6 +32,10 @@ public class JetSys {
      */
     private HookList hookList;
     
+    private Themeable activeTheme;
+    
+    private String tplHookName = "HookProcessTpl";
+    
     /**
      * 
      */
@@ -40,8 +46,10 @@ public class JetSys {
     
     public void bootstrap() {
     	Module.syst = this;
+    	
         initModules();
-        
+
+    	((Themeable)activeTheme).themeMainFrame();
     }
     
     /**
@@ -59,13 +67,12 @@ public class JetSys {
      * 
      */
     public final void initModules() {
-
-    	addModule(new CGui2("cgui2"));
-    	addModule(new WebService("webService"));
-    	addModule(new Client("client"));
-    	addModule(new Sys("sys"));
-    	String[] modules = {"webService", "cgui2", "client", "sys"};
-    	enableModules(modules);
+    	addModule(new DTheme(DTheme.NAME));
+    	addModule(new Mgmnt(Mgmnt.NAME));
+//    	addModule(new Tst(Tst.NAME));
+    	
+    	enableModules(new String[] {DTheme.NAME, Mgmnt.NAME});//});//
+    	
     }
 
     public void enableModules(String[] modules) {
@@ -87,8 +94,39 @@ public class JetSys {
         return moduleList.get(name);
     }
     
+    public Component render(JetTpl template, Module implementingModule) {
+    	TplVars vars = new TplVars();
+    	String hookName = constructTplHookName(template.tplName, implementingModule.getName());
+    	
+    	// Let implementing module add its default vars first.
+    	if(listenerlist.isModuleImplementingHook(hookName, implementingModule)){
+    		((HookProcessTpl)implementingModule).hookProcessTpl(hookName, vars);
+    	}
+    	
+    	// Let other implementing modules add their vars to the template.
+    	runHookProcessTpl(hookName, implementingModule, vars);
+    	
+    	
+    	
+    	return template.render(vars);
+    }
     
-    //  =================== HOOK LISTENERS =========================
+    private String constructTplHookName(String tplName, String moduleName) {
+    	return tplHookName + "_" + tplName + "_" + moduleName;
+    }
+    
+    
+    
+    
+    public Themeable getActiveTheme() {
+		return activeTheme;
+	}
+
+	public void setActiveTheme(Themeable activeTheme) {
+		this.activeTheme = activeTheme;
+	}
+
+	//  =================== HOOK LISTENERS =========================
     public void addHookModuleEnabledListener(Module m) {
     	listenerlist.add("moduleEnabled", m);
     }
@@ -96,6 +134,12 @@ public class JetSys {
 
     public void addHookEnabledListener(Module m) {
     	listenerlist.add("hookEnabled", m);
+    }
+    
+    public void addHookProcessTpl(String hookName, Module declaringHookModule, Module implementingModule) {
+    	
+    	String hook = constructTplHookName(hookName, declaringHookModule.getName());
+    	listenerlist.add(hook, implementingModule);
     }
     
     
@@ -120,6 +164,13 @@ public class JetSys {
         	h.hookEnabled();
     	}
     }
+    
+    public void runHookProcessTpl(String hookName, Module m, TplVars vars){
+    	ModuleList mlist = listenerlist.getImplementingModulesExclude(hookName, new String[] {m.getName()});
+    	for(Module module : mlist.values()){
+    		((HookProcessTpl)module).hookProcessTpl(hookName, vars);
+    	}
+    }
 
     //  =================== HOOK INTERFACES =========================
 	public interface HookModuleEnabled{
@@ -128,6 +179,16 @@ public class JetSys {
 
 	public interface HookEnabled{
 		public void hookEnabled();
+	}
+	
+	public interface HookProcessTpl {
+		public TplVars hookProcessTpl(String hookName, TplVars vars);
+	}
+	
+	// ========================================================
+	
+	public interface Themeable{
+		public void themeMainFrame();
 	}
     
 }
