@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
 
+import Jet.Modules.context.Context;
 import Jet.themes.defaultTheme.DefaultTheme;
 
 //import duiu.com.core.jetModules.dTheme.DTheme;
@@ -72,6 +73,13 @@ public class JetSys {
      * 
      */
     public final void initModules() {
+    	
+    	// add Jet's required modules
+    	addModule(new Context(Context.NAME));
+    	
+    	// enable Jet's required modules
+    	enableModules(new String[] {Context.NAME});
+    	
     	addModule(new DefaultTheme(DefaultTheme.NAME));
 //    	addModule(new DTheme(DTheme.NAME));
 //    	addModule(new Mgmnt(Mgmnt.NAME));

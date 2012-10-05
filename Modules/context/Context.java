@@ -7,6 +7,7 @@ import Jet.ModuleList;
 public class Context extends Module {
 
 	private HookListenerList listenerList = new HookListenerList();
+	public static String NAME = "context";
 	public Context(String name){ 
 		super(name);
 	}
