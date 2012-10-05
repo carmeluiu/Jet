@@ -66,6 +66,7 @@ public class DefaultFrame extends JFrame {
 			
 			@Override
 			public void run() {
+				pack();
 				setVisible(true);
 			}
 		});

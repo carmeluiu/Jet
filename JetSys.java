@@ -112,7 +112,7 @@ public class JetSys {
      */
     public Component render(JetTpl template, Module implementingModule) {
     	TplVars vars = new TplVars();
-    	String hookName = constructTplHookName(template.tplName, implementingModule.getName());
+    	String hookName = constructTplHookName(template.getName(), implementingModule.getName());
     	
     	// Let implementing module add its default vars first.
     	if(listenerlist.isModuleImplementingHook(hookName, implementingModule)){
@@ -127,7 +127,27 @@ public class JetSys {
     	return template.render(vars);
     }
     
-    private String constructTplHookName(String tplName, String moduleName) {
+    /**
+     * Construct the name of a tplHook.
+     * tplHook is the hook name to register with 
+     * {@link #addHookProcessTpl(String, Module)}. This hook-name, like any other
+     * hook-name must be unique. 
+     * The uniqueness of this hook-name is achieved by using the 
+     * <code>moduleName</code> in the string.
+     * 
+     * @param tplName
+     *   The Template name.
+     *   Use {<code>tplName</code>Tpl} as the structure of the name of the class that 
+     *   implements this template.
+     * @param moduleName
+     *   The name of a module.
+     *   This is what makes the hook name unique. By concatenating the tplName 
+     *   (which can be any string) followed by a '_' and the moduleName (which
+     *   must be unique).
+     * @return
+     *   The hook name.
+     */
+    public String constructTplHookName(String tplName, String moduleName) {
     	return tplHookName + "_" + tplName + "_" + moduleName;
     }
     
@@ -190,11 +210,17 @@ public class JetSys {
     
     /**
      * Add a hook listener for {@link #hookProcessTpl(String, Module, TplVars)}
+     * Must implements {@link HookProcessTpl};
+     * 
      * @param hookName
+     *   The unique name of this hook. 
+     *   Consider using {@link #constructTplHookName(String, String)} for 
+     *   constructing a unique hook name.
      * @param implementingModule
+     *   The implementing Module
      */
     public void addHookProcessTpl(String hookName, Module implementingModule){
-    	
+    	listenerlist.add(hookName, implementingModule);
     }
     
 
@@ -213,6 +239,11 @@ public class JetSys {
     		h.hookModuleEnabled(m);
     	}
     }
+    
+    /**
+     * 
+     * @param m
+     */
     public void hookEnabled(Module m){
     	ModuleList mlist = listenerlist.getImplementingModules("hookEnabled");
     	
@@ -244,6 +275,12 @@ public class JetSys {
 		public void hookEnabled();
 	}
 	
+	/**
+	 * Interface for implementing {@link #hookProcessTpl(String, TplVars)}
+	 * 
+	 * @see JetSys#hookProcessTpl(String, Module, TplVars)
+	 * @see JetSys#addHookProcessTpl(String, Module)
+	 */
 	public interface HookProcessTpl {
 		public TplVars hookProcessTpl(String hookName, TplVars vars);
 	}
