@@ -66,12 +66,13 @@ public class DefaultTheme extends Module implements HookEnabled,
 	@Override
 	public TplVars hookProcessTpl(String hookName, TplVars vars) {
 		syst.echo(hookName  + " is invoked");
-		if(!vars.containsKey("content")){
-			vars.put("content", new DefaultContent());
-		}
 		if(!vars.containsKey("header")){
 			vars.put("header", new DefaultHeader());
 		}
+		if(!vars.containsKey("content")){
+			vars.put("content", new DefaultContent());
+		}
+		syst.echo(vars.toString());
 		
 		return null;
 	}
