@@ -1,5 +1,6 @@
 package Jet.themes.defaultTheme;
 
+import java.awt.Component;
 import java.awt.Container;
 
 import Jet.JetSys;
@@ -23,6 +24,10 @@ public class DefaultTheme extends Module implements HookEnabled,
 	 */
 	private Container pane;
 	
+	private Component header, content, sidebarLeft, sidebarRight;
+	
+	private View view;
+	
 	public static String NAME = "defaultTheme";
 	
 	public DefaultTheme(String name){
@@ -39,6 +44,8 @@ public class DefaultTheme extends Module implements HookEnabled,
 	public void hookEnabled() {
 		System.out.println("in hook");
 		syst.setActiveTheme(this);
+		
+		view = new View(this);
 	}
 	
 	/**
@@ -76,6 +83,40 @@ public class DefaultTheme extends Module implements HookEnabled,
 		
 		return null;
 	}
+
+	public Component getHeader() {
+		return header;
+	}
+
+	public void setHeader(Component header) {
+		this.header = header;
+	}
+
+	public Component getContent() {
+		return content;
+	}
+
+	public void setContent(Component content) {
+		this.content = content;
+	}
+
+	public Component getSidebarLeft() {
+		return sidebarLeft;
+	}
+
+	public void setSidebarLeft(Component sidebarLeft) {
+		this.sidebarLeft = sidebarLeft;
+	}
+
+	public Component getSidebarRight() {
+		return sidebarRight;
+	}
+
+	public void setSidebarRight(Component sidebarRight) {
+		this.sidebarRight = sidebarRight;
+	}
+	
+//	public interface 
 	
 	
 }
