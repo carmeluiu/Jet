@@ -1,6 +1,9 @@
 package Jet.themes.defaultTheme;
 
+import java.awt.Component;
 import java.awt.Container;
+
+import javax.swing.JPanel;
 
 import Jet.JetSys;
 import Jet.JetSys.HookProcessTpl;
@@ -25,6 +28,12 @@ public class DefaultTheme extends Module implements HookEnabled,
 	
 	public static String NAME = "defaultTheme";
 	
+	private Component header;
+	
+	private Component content;
+	
+	private PageTpl pageTpl;
+	
 	public DefaultTheme(String name){
 		super(name);
 		syst.addHookEnabledListener(this);
@@ -39,6 +48,7 @@ public class DefaultTheme extends Module implements HookEnabled,
 	public void hookEnabled() {
 		System.out.println("in hook");
 		syst.setActiveTheme(this);
+//		header = new DefaultHeader();
 	}
 	
 	/**
@@ -50,11 +60,12 @@ public class DefaultTheme extends Module implements HookEnabled,
 		
 		pane = frame.getContentPane();
 		
+		pageTpl = new PageTpl(pane);
 		/**
 		 * Pass this module to give it the chance to add default values 
 		 * to the TplVars vars hashmap
 		 */
-		syst.render(new PageTpl(pane), this);
+		syst.render(pageTpl, this);
 		
 		frame.showThis();
 //		frame.getcon
@@ -72,10 +83,33 @@ public class DefaultTheme extends Module implements HookEnabled,
 		if(!vars.containsKey("content")){
 			vars.put("content", new DefaultContent());
 		}
+		if(!vars.containsKey("leftSidebar")){
+			vars.put("leftSidebar", new JPanel());
+		}
 		syst.echo(vars.toString());
 		
 		return null;
 	}
+
+	public Component getHeader() {
+		return header;
+	}
+
+	public void setHeader(Component header) {
+		this.header = header;
+	}
+
+	public Component getContent() {
+		return pageTpl.getContent();
+	}
+
+	public void setContent(Component content) {
+		this.content = content;
+	}
+	
+	
+	
+	
 	
 	
 }

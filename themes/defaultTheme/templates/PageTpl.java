@@ -12,6 +12,8 @@ public class PageTpl extends JetTpl {
 
 	private JPanel parent;
 	
+	private Component content;
+	
 	public static String NAME = "page" ;
 	
 //	private final String header = "header";
@@ -31,17 +33,27 @@ public class PageTpl extends JetTpl {
 			parent.add((Component) vars.get("header"), BorderLayout.NORTH);
 		}
 		if(vars.containsKey("content")){
-			parent.add((Component) vars.get("content"), BorderLayout.CENTER);
+			content = (Component) vars.get("content");
+			parent.add(content, BorderLayout.CENTER);
 		}
 		else{
 			vars.put("content", new DefaultContent());
-			parent.add((Component) vars.get("content"), BorderLayout.CENTER);
+			content = (Component) vars.get("content");
+			parent.add(content, BorderLayout.CENTER);
 		}
 		if(vars.containsKey("leftSidebar")){
 			parent.add((Component) vars.get("leftSidebar"), BorderLayout.WEST);
 		}
 //		return super.render(vars);
 		return parent;
+	}
+
+	public Component getContent() {
+		return content;
+	}
+
+	public void setContent(Component content) {
+		this.content = content;
 	}
 	
 	

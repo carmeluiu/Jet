@@ -55,7 +55,7 @@ public class JetSys {
         if(activeTheme == null) {
         	throw new Exception("No Active Theme provided");
         }
-    	((Themeable)activeTheme).themeMainFrame();
+//    	((Themeable)activeTheme).themeMainFrame();
     }
     
     /**
@@ -78,14 +78,14 @@ public class JetSys {
     	addModule(new Context(Context.NAME));
     	
     	// enable Jet's required modules
-    	enableModules(new String[] {Context.NAME});
+//    	enableModules(new String[] {Context.NAME});
     	
     	addModule(new DefaultTheme(DefaultTheme.NAME));
 //    	addModule(new DTheme(DTheme.NAME));
 //    	addModule(new Mgmnt(Mgmnt.NAME));
 //    	addModule(new Tst(Tst.NAME));
     	
-    	enableModules(new String[] {DefaultTheme.NAME});//});//
+    	enableModules(new String[] {Context.NAME, DefaultTheme.NAME});//});//
     	
     }
     
@@ -269,8 +269,10 @@ public class JetSys {
      */
     public void hookProcessTpl(String hookName, Module m, TplVars vars){
     	ModuleList mlist = listenerlist.getImplementingModulesExclude(hookName, new String[] {m.getName()});
-    	for(Module module : mlist.values()){
-    		((HookProcessTpl)module).hookProcessTpl(hookName, vars);
+    	if(mlist != null) {
+	    	for(Module module : mlist.values()){
+	    		((HookProcessTpl)module).hookProcessTpl(hookName, vars);
+	    	}
     	}
     }
 

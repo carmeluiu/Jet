@@ -7,6 +7,9 @@ import java.awt.Component;
  * 
  * Use this function to render any gui with ..
  *
+ * Add static String with your template's name.
+ * Add super(name) in you constructor .
+ * Override {@link #render(TplVars)}
  */
 public class JetTpl {
 
@@ -14,15 +17,28 @@ public class JetTpl {
 	
 	protected  String name;
 	
+	/**
+	 * 
+	 */
 	public JetTpl(){
 		
 	}
 	
+	/**
+	 * Use this in your template (i.e super(name))
+	 * @param name
+	 */
 	public JetTpl(String name) {
 //		JetTpl.tplName = name;
 		this.name = name;
 	}
 	
+	/**
+	 * Override this function to render the template the way you 
+	 * want.
+	 * @param vars
+	 * @return
+	 */
 	public Component render(TplVars vars) {
 		return null;
 	}

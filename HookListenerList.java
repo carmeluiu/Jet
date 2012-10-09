@@ -35,7 +35,7 @@ public class HookListenerList{
 	public ModuleList getImplementingModulesExclude(String hookName, String[] excludeModules){
 		ModuleList ml = getImplementingModules(hookName);
 		for (String moduleName : excludeModules){
-			if(ml.containsKey(moduleName)){
+			if(ml != null && ml.containsKey(moduleName)){
 				ml.remove(moduleName);
 			}
 		}
@@ -50,7 +50,12 @@ public class HookListenerList{
 	 * @return
 	 */
 	public boolean isModuleImplementingHook(String hookName, Module m) {
-		return ((ModuleList)getImplementingModules(hookName)).containsKey(m.getName());
+		ModuleList ml = getImplementingModules(hookName);
+		boolean result = false;
+		if(ml != null) {
+			result = ml.containsKey(m.getName());
+		}
+		return result;
 		
 	}
 	
