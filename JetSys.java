@@ -5,18 +5,29 @@
 package Jet;
 
 
+import java.lang.management.ManagementFactory;
 import java.util.Collection;
+
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectName;
+
+import com.uiu.mngmnt.Mmodule;
 
 import GUI.CGui2;
 import JetModules.webService.WebService;
 import Sys.Sys;
 import client.Client;
+import client.ClientM;
 
 
 /**
  *
  */
-public class JetSys {
+public class JetSys{
     
 	protected HookListenerList listenerlist = new HookListenerList();
 	
@@ -60,6 +71,7 @@ public class JetSys {
      */
     public final void initModules() {
 
+//    	addModule(new Mmodule());
     	addModule(new CGui2("cgui2"));
     	addModule(new WebService("webService"));
     	addModule(new Client("client"));
@@ -84,6 +96,9 @@ public class JetSys {
      *   Module The module.
      */
     public Module getModule(String name){
+//    	if(name.compareTo("manegmentModule") == 0) {
+//    		return 
+//    	}
         return moduleList.get(name);
     }
     
@@ -129,5 +144,10 @@ public class JetSys {
 	public interface HookEnabled{
 		public void hookEnabled();
 	}
+	
+	public void sayHello(){
+		System.out.println("hello sys");
+	}
+	
     
 }
