@@ -71,13 +71,7 @@ public class JetSys{
      */
     public final void initModules() {
 
-//    	addModule(new Mmodule());
-    	addModule(new CGui2("cgui2"));
-    	addModule(new WebService("webService"));
-    	addModule(new Client("client"));
-    	addModule(new Sys("sys"));
-    	String[] modules = {"webService", "cgui2", "client", "sys"};
-    	enableModules(modules);
+
     }
 
     public void enableModules(String[] modules) {
