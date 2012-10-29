@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 /**
  *
- * @author carmel
  */
 public class Module implements Moduleable{
     
