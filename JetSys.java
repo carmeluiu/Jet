@@ -232,6 +232,14 @@ public class JetSys{
     	listenerlist.add(hookName, implementingModule);
     }
     
+    /**
+     * 
+     * @param m
+     */
+    public void addHookAllModuleAreSet(Module m){
+    	listenerlist.add("hookAllModuleAreSet", m);
+    }
+    
 
     
 
@@ -276,6 +284,20 @@ public class JetSys{
 	    	}
     	}
     }
+    
+    /**
+     * Hook execute function for {@link HookAllModuleAreSet}
+     * 
+     * 
+     */
+    public void hookAllModuleAreSet(){
+    	ModuleList mlist = listenerlist.getImplementingModules("hookAllModuleAreSet");
+    	Collection<Module> c = mlist.values();
+    	for(Module module : c) {
+    		HookAllModuleAreSet h = (HookAllModuleAreSet)module;
+    		h.hookAllModuleAreSet();
+    	}
+    }
 
     //  =================== HOOK INTERFACES =========================
 	public interface HookModuleEnabled{
@@ -298,6 +320,18 @@ public class JetSys{
 	 */
 	public interface HookProcessTpl {
 		public TplVars hookProcessTpl(String hookName, TplVars vars);
+	}
+	
+	/**
+	 * Run this hook once all modules are enabled and ready to go.
+	 * 
+	 * This is done to avoid {@link NullPointerException}.
+	 * 
+	 * @author carmel
+	 *
+	 */
+	public interface HookAllModuleAreSet{
+		public void hookAllModuleAreSet();
 	}
 	
 	// ========================================================
