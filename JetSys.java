@@ -5,9 +5,18 @@
 package Jet;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import java.awt.Component;
+
+import GUI.CGui2;
 import Jet.Modules.context.Context;
 import Jet.themes.defaultTheme.DefaultTheme;
 
@@ -37,12 +46,30 @@ public class JetSys{
     
     private String tplHookName = "HookProcessTpl";
     
+    private File file;
+    
+    private String logFileName = "log.log";
+
+	protected static FileOutputStream fos;
+    
     /**
      * Main Jet System Object
      */
     public JetSys() { 
         moduleList = new ModuleList();
         hookList = new HookList();
+
+		file = new File(logFileName);
+		try {
+			fos = new FileOutputStream(file);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     public void bootstrap() throws Exception {
@@ -96,6 +123,7 @@ public class JetSys{
     		Module m = getModule(name);
     		m.setEnabled(true);
     		hookEnabled(m);
+    		hookModuleEnabled(m.getName() + "_moduleEnabled", m);
     	}
     }
     
@@ -135,6 +163,29 @@ public class JetSys{
     	
     	return template.render(vars);
     }
+    
+
+	/**
+	 * 
+	 * @param msg
+	 */
+	public static void log(String msg){
+		System.out.println(msg);
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
+		msg = "[LOG " + format.format(date) + "] => " + msg + "\n";
+		byte[] bmsg = msg.getBytes();
+		try {
+			fos.write(bmsg);
+			fos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		fos.wr;
+	}
     
     /**
      * Construct the name of a tplHook.
@@ -190,8 +241,8 @@ public class JetSys{
 	 * @param m
 	 *   The module that runs this hook.
 	 */
-    public void addHookModuleEnabledListener(Module m) {
-    	listenerlist.add("moduleEnabled", m);
+    public void addHookModuleEnabledListener(String moduleName, Module m) {
+    	listenerlist.add(moduleName + "_moduleEnabled", m);
     }
     
 
@@ -248,12 +299,14 @@ public class JetSys{
      * 
      * @param m
      */
-    public void hookModuleEnabled(Module m){
-    	ModuleList mlist = listenerlist.getImplementingModules("moduleEnabled");
-    	Collection<Module> c = mlist.values();
-    	for(Module module : c) {
-    		HookModuleEnabled h = (HookModuleEnabled)module;
-    		h.hookModuleEnabled(m);
+    public void hookModuleEnabled(String hookName, Module m){
+    	ModuleList mlist = listenerlist.getImplementingModules(hookName);
+    	if(mlist != null){
+	    	Collection<Module> c = mlist.values();
+	    	for(Module module : c) {
+	    		HookModuleEnabled h = (HookModuleEnabled)module;
+	    		h.hookModuleEnabled(m);
+	    	}
     	}
     }
     
@@ -302,6 +355,7 @@ public class JetSys{
     //  =================== HOOK INTERFACES =========================
 	public interface HookModuleEnabled{
 		public void hookModuleEnabled(Module m);
+//		public void hookModuleEnabled()
 	}
 
 	public interface HookEnabled{
